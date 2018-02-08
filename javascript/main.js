@@ -3,9 +3,8 @@
 const btn = document.querySelector("button");
 
 function loadingHackYourFutureData(){
-    console.log("You clicked me!")
+    //console.log("You clicked me!")
     fetchJsonData(hackYourFutureAmsterdamUrl, printJsonData);
-    btn.style="display:none";
 };
 
 btn.addEventListener("click",loadingHackYourFutureData);
@@ -33,7 +32,7 @@ function fetchJsonData(url, callBackFunction) {
 };
 
 const printJsonData = function(data) {
-    console.log(data);
+    //console.log(data);
     displayHackYourFutureInfo(data);
 };
 
@@ -42,31 +41,43 @@ const hackYourFutureAmsterdamUrl = 'https://api.github.com/orgs/HackYourFuture/r
 /*Display the data that you get from the Github API on your web page.*/
 
 const list = document.querySelector("ul");
-const listItem = document.createElement("li");
-list.appendChild(listItem);
+
 
 function displayHackYourFutureInfo(data){
     for(let i = 0 ; i < data.length ; i++){
+        const listItem = document.createElement("li");
+        list.appendChild(listItem);
         listItem.innerHTML = data[i].name;
     }
+
 };
 
 /*Now link the two together: When you click the button -> get the data from the Github API and display it on your website*/
 
 /*Make a function which takes a single argument. The function should make an XHR request to https://api.github.com/search/repositories?q=user:HackYourFuture+[SearchTerm] where the search term will be the argument. This argument will be the input the user has given you, so make sure that when the user clicks the button you call this function with the argument.*/
+const userSearch = document.querySelector("input");
+        userSearch.addEventListener("keyup",function(){
+            list.innerHTML="";
+    });
+
 const searchBtn = document.getElementById("search");
+const inputValue = userSearch.value.toLowerCase();
+searchBtn.addEventListener("click",repoSearchByName(inputValue));
 
-searchBtn.addEventListener("click",repoSearchByName);
-                           
-function repoSearchByName(){
-    console.log("search");
-    const searchElement = document.querySelector("input");
-    const inputValue = searchElement.value.toLowerCase();
-    console.log(inputValue);
-    const userSearchUrl = "https://github.com/HackYourFuture/" + inputValue;
-    listItem.innerHTML = `<a href=${userSearchUrl} target="_blank">` + userSearchUrl + `</a>`;
+//function takes single argument(searchterm).
+function repoSearchByName(input){
+    const searchedUrl = "https://api.github.com/search/repositories?q=user:HackYourFuture+" + input;
+    fetchJsonData(searchedUrl, displaySearchedRepo);
+}
+
+function displaySearchedRepo(data){
+    console.log(searchedUrl);
+    for(let i = 0 ; i < data.length ; i++){
+        const listItem = document.createElement("li");
+        list.appendChild(listItem);
+        listItem.innerHTML = data[i].name;
+    }
 };
-
 
 /**/
 /**/
