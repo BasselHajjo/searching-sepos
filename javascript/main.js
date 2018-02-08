@@ -40,10 +40,8 @@ const hackYourFutureAmsterdamUrl = 'https://api.github.com/orgs/HackYourFuture/r
 
 /*Display the data that you get from the Github API on your web page.*/
 
-const list = document.querySelector("ul");
-
-
 function displayHackYourFutureInfo(data){
+    const list = document.querySelector("ul");
     for(let i = 0 ; i < data.length ; i++){
         const listItem = document.createElement("li");
         list.appendChild(listItem);
@@ -57,27 +55,33 @@ function displayHackYourFutureInfo(data){
 /*Make a function which takes a single argument. The function should make an XHR request to https://api.github.com/search/repositories?q=user:HackYourFuture+[SearchTerm] where the search term will be the argument. This argument will be the input the user has given you, so make sure that when the user clicks the button you call this function with the argument.*/
 const userSearch = document.querySelector("input");
         userSearch.addEventListener("keyup",function(){
+            const list = document.querySelector("ul");
             list.innerHTML="";
     });
 
 const searchBtn = document.getElementById("search");
-const inputValue = userSearch.value.toLowerCase();
-searchBtn.addEventListener("click",repoSearchByName(inputValue));
+
+searchBtn.addEventListener("click",function(){
+    const inputValue = userSearch.value.toLowerCase();
+    repoSearchByName(inputValue);
+});
 
 //function takes single argument(searchterm).
 function repoSearchByName(input){
     const searchedUrl = "https://api.github.com/search/repositories?q=user:HackYourFuture+" + input;
+    function displaySearchedRepo(data){
+    const list = document.querySelector("ul");
+    console.log(searchedUrl);
+    for(let i = 0 ; i < data.length;i++){
+        const listItem = document.createElement("li");
+        list.appendChild(listItem);
+        listItem.innerHTML = data[i].items.full_name;
+    }
+};
+
     fetchJsonData(searchedUrl, displaySearchedRepo);
 }
 
-function displaySearchedRepo(data){
-    console.log(searchedUrl);
-    for(let i = 0 ; i < data.length ; i++){
-        const listItem = document.createElement("li");
-        list.appendChild(listItem);
-        listItem.innerHTML = data[i].name;
-    }
-};
 
 /**/
 /**/
