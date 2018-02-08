@@ -95,8 +95,40 @@ function repoSearchByName(input){
 
         listItem.innerHTML = '<a href="https://api.github.com/repos/HackYourFuture/' + data.items[i].name + '" target="_blanck">' + data.items[i].name + '</a>';
         const contributorUrl = '"https://api.github.com/repos/HackYourFuture/' + data.items[i].name + '/contributors"';
-        console.log(contributorUrl);
-        listItem.addEventListener("click",contributors);
+        //console.log(contributorUrl);
+        listItem.addEventListener("click",function(){
+           fetchJsonData(data.items[i].contributors_url,displayContibutors); 
+        });
+        
+        //commits
+        const commitsUrl = "https://api.github.com/repos/HackYourFuture/" + data.items[i].name + "/commits"
+        const commitsList = document.createElement("ul");
+        const contributor = document.querySelector("ol");
+        list.appendChild(commitsList);
+        //I didn't know how to appand this ul to the contributor ol since i create it in a diffrent function !
+        fetchJsonData(commitsUrl,displayCommits);
+        function displayCommits(data){
+            console.log(data);
+            for(let i = 0 ; i < data.length; i++){
+           const commitsListItems = document.createElement("li");
+           commitsList.appendChild(commitsListItems);
+           commitsListItems.innerHTML= data[i].commit.message;
+           }
+        }
+        
+        
+        function displayContibutors(data){
+            //console.log(data);
+          const contributor = document.querySelector("ol"); 
+            for(let i = 0 ; i < data.length ; i++){
+                 const contributorImage = document.createElement("img");
+                 contributor.appendChild(contributorImage);
+                 contributorImage.src= data[i].avatar_url;
+                 const contributorLogin = document.createElement("li");
+                 contributor.appendChild(contributorLogin);
+                 contributorLogin.innerHTML = '<a href="' + data[i].html_url + '" target="_blanck">' + data[i].login + '</a>';
+            }
+        }
        }
 };
 
@@ -105,15 +137,6 @@ function repoSearchByName(input){
 
 /*For each repository, show (in the right column) who the contributers are. You will need to use the contributors_url for this.*/
 
-function contributors(){
-    const contributor = document.querySelector("ol");
-    fetchJsonData(contibutorUrl,displayContibutors);
-};
-
-
-function displayContibutors(){
-    console.log(data);
-}
 /**/
 /**/
 /**/
