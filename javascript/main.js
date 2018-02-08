@@ -54,38 +54,66 @@ function displayHackYourFutureInfo(data){
 
 /*Make a function which takes a single argument. The function should make an XHR request to https://api.github.com/search/repositories?q=user:HackYourFuture+[SearchTerm] where the search term will be the argument. This argument will be the input the user has given you, so make sure that when the user clicks the button you call this function with the argument.*/
 const userSearch = document.querySelector("input");
-        userSearch.addEventListener("keyup",function(){
+const warningMsg = document.querySelector("p");
+        userSearch.addEventListener("keyup",function(e){
             const list = document.querySelector("ul");
             list.innerHTML="";
+            warningMsg.innerHTML = "";
+            if (e.keyCode === 13) {
+                searchResult();
+  }
     });
 
 const searchBtn = document.getElementById("search");
 
-searchBtn.addEventListener("click",function(){
-    const inputValue = userSearch.value.toLowerCase();
-    repoSearchByName(inputValue);
-});
+searchBtn.addEventListener("click",searchResult);
 
-//function takes single argument(searchterm).
+function searchResult(){
+    const inputValue = userSearch.value.toLowerCase();
+    
+/*Make sure you handle user input well. That means you need to think about empty input, and input that doesn't yield any results.*/
+    
+    if(inputValue==""){  //this part still need work!
+        alert("Enter a valid name please !");
+    }else{
+    repoSearchByName(inputValue);
+        }
+};
+
+//function takes single argument(searchTerm).
 function repoSearchByName(input){
     const searchedUrl = "https://api.github.com/search/repositories?q=user:HackYourFuture+" + input;
     function displaySearchedRepo(data){
     const list = document.querySelector("ul");
-    console.log(searchedUrl);
-    for(let i = 0 ; i < data.length;i++){
+    //console.log(searchedUrl);
+    for(let i = 0 ; i < data.items.length;i++){
         const listItem = document.createElement("li");
         list.appendChild(listItem);
-        listItem.innerHTML = data[i].items.full_name;
-    }
+        
+/*Make all the repositories link their own page in Github. Use the value of the key: name to make this work (hint: Github urls always look like this https://api.github.com/repos/HackYourFuture/[repositoryName] where [repositoryName] would be replaced by the actual name of the repository, for example CommandLine). Make sure the link opens in a new tab.*/  
+        
+
+        listItem.innerHTML = '<a href="https://api.github.com/repos/HackYourFuture/' + data.items[i].name + '" target="_blanck">' + data.items[i].name + '</a>';
+        const contributorUrl = '"https://api.github.com/repos/HackYourFuture/' + data.items[i].name + '/contributors"';
+        console.log(contributorUrl);
+        listItem.addEventListener("click",contributors);
+       }
 };
 
     fetchJsonData(searchedUrl, displaySearchedRepo);
 }
 
+/*For each repository, show (in the right column) who the contributers are. You will need to use the contributors_url for this.*/
 
-/**/
-/**/
-/**/
+function contributors(){
+    const contributor = document.querySelector("ol");
+    fetchJsonData(contibutorUrl,displayContibutors);
+};
+
+
+function displayContibutors(){
+    console.log(data);
+}
 /**/
 /**/
 /**/
