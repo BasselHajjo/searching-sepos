@@ -54,11 +54,9 @@ function displayHackYourFutureInfo(data){
 
 /*Make a function which takes a single argument. The function should make an XHR request to https://api.github.com/search/repositories?q=user:HackYourFuture+[SearchTerm] where the search term will be the argument. This argument will be the input the user has given you, so make sure that when the user clicks the button you call this function with the argument.*/
 const userSearch = document.querySelector("input");
-const warningMsg = document.querySelector("p");
         userSearch.addEventListener("keyup",function(e){
             const list = document.querySelector("ul");
             list.innerHTML="";
-            warningMsg.innerHTML = "";
             if (e.keyCode === 13) {
                 searchResult();
   }
@@ -101,20 +99,21 @@ function repoSearchByName(input){
         });
         
         //commits
+        //const contributor = document.querySelector("ol");
         const commitsUrl = "https://api.github.com/repos/HackYourFuture/" + data.items[i].name + "/commits"
         const commitsList = document.createElement("ul");
         const contributor = document.querySelector("ol");
-        list.appendChild(commitsList);
+        contributor.appendChild(commitsList);
         //I didn't know how to appand this ul to the contributor ol since i create it in a diffrent function !
-        fetchJsonData(commitsUrl,displayCommits);
-        function displayCommits(data){
-            console.log(data);
-            for(let i = 0 ; i < data.length; i++){
-           const commitsListItems = document.createElement("li");
-           commitsList.appendChild(commitsListItems);
-           commitsListItems.innerHTML= data[i].commit.message;
-           }
-        }
+//       fetchJsonData(commitsUrl,displayCommits);
+//        function displayCommits(data){
+//            console.log(data);
+//            for(let i = 0 ; i < data.length; i++){
+//           const commitsListItems = document.createElement("li");
+//           commitsList.appendChild(commitsListItems);
+//           commitsListItems.innerHTML= data[i].commit.message;
+//           }
+//        }
         
         
         function displayContibutors(data){
