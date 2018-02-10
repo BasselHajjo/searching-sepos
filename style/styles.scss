@@ -2,21 +2,27 @@ body{
     padding: 0;
     margin: 0;
     font-family: "Ubuntu";
+    background-color: #dedede;
+}
+
+section{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 .left{
-    float: left;
-    width: 50%;
+    padding: 20px;
+    h3{
+        text-align: center;
+    }
 }
 
 .right{
-    float: right;
-    width: 40%;
-    padding: 40px;
-    min-height: 100vh;
-    border-left: solid 2px gray;
+    padding: 20px;
+    h3{
+        text-align: center;
+    }
     ol{
-        padding-left: 40px;
         display: grid;
         grid-template-columns: 1fr 1fr;
         li{
@@ -59,6 +65,7 @@ header{
     padding: 10px;
     color: #ffffff;
     border-bottom: solid 2px red;
+    margin-bottom: 20px;
     h1{
         margin-top: 0;
     }
@@ -69,7 +76,7 @@ li{
     color: black;
     font-size: 15px;
     a{
-    text-decoration: none;
+    text-decoration:underline;
     color: black;
     &:hover{
         color: red;
@@ -86,3 +93,7 @@ img{
     margin: 5px;
     border-radius: 10px;
     }
+
+span{
+    font-size: 10px;
+}

@@ -15,7 +15,12 @@ function fetchJsonData(url, callBackFunction) {
     const request = new XMLHttpRequest();
     request.addEventListener('load', function(data) {
          if (this.status === 200) {
-            console.log("Data loaded");
+            //console.log("Data loaded");
+             /*const loading = document.querySelector("img");
+             loading.src = "images/loading.svg";
+             if(request.readyState==XMLHttpRequest.DONE){
+                 loading.src="";
+             }*/
             const responseText = request.responseText;
             callBackFunction(JSON.parse(request.responseText));
         } else {
@@ -91,7 +96,7 @@ function repoSearchByName(input){
 /*Make all the repositories link their own page in Github. Use the value of the key: name to make this work (hint: Github urls always look like this https://api.github.com/repos/HackYourFuture/[repositoryName] where [repositoryName] would be replaced by the actual name of the repository, for example CommandLine). Make sure the link opens in a new tab.*/  
         
 
-        listItem.innerHTML = '<a href="https://api.github.com/repos/HackYourFuture/' + data.items[i].name + '" target="_blanck">' + data.items[i].name + '</a>';
+        listItem.innerHTML = '<h3><a href="https://api.github.com/repos/HackYourFuture/' + data.items[i].name + '" target="_blanck">' + data.items[i].name + '</a><span> Click to see the contributors</span></h3>';
         const contributorUrl = '"https://api.github.com/repos/HackYourFuture/' + data.items[i].name + '/contributors"';
         //console.log(contributorUrl);
         listItem.addEventListener("click",function(){
@@ -103,19 +108,20 @@ function repoSearchByName(input){
         const commitsUrl = "https://api.github.com/repos/HackYourFuture/" + data.items[i].name + "/commits"
         const commitsList = document.createElement("ul");
         const contributor = document.querySelector("ol");
-        contributor.appendChild(commitsList);
+        list.appendChild(commitsList);
         //I didn't know how to appand this ul to the contributor ol since i create it in a diffrent function !
-//       fetchJsonData(commitsUrl,displayCommits);
-//        function displayCommits(data){
-//            console.log(data);
-//            for(let i = 0 ; i < data.length; i++){
-//           const commitsListItems = document.createElement("li");
-//           commitsList.appendChild(commitsListItems);
-//           commitsListItems.innerHTML= data[i].commit.message;
-//           }
-//        }
+       fetchJsonData(commitsUrl,displayCommits);
+        function displayCommits(data){
+            //console.log(data);
+            for(let i = 0 ; i < data.length; i++){
+           const commitsListItems = document.createElement("li");
+           commitsList.appendChild(commitsListItems);
+           commitsListItems.innerHTML= '<p>User : ' + data[i].commit.author.name + '<br/>' + "Commit : " +data[i].commit.message + '</p>';
+           }
+        }
         
-        
+   /*For each repository, show (in the right column) who the contributers are. You will need to use the contributors_url for this.*/
+     
         function displayContibutors(data){
             //console.log(data);
           const contributor = document.querySelector("ol"); 
@@ -126,6 +132,10 @@ function repoSearchByName(input){
                  const contributorLogin = document.createElement("li");
                  contributor.appendChild(contributorLogin);
                  contributorLogin.innerHTML = '<a href="' + data[i].html_url + '" target="_blanck">' + data[i].login + '</a>';
+        userSearch.addEventListener("keyup",function(){
+            contributorLogin.innerHTML="";
+            contributorImage.src="";
+        });
             }
         }
        }
@@ -134,7 +144,6 @@ function repoSearchByName(input){
     fetchJsonData(searchedUrl, displaySearchedRepo);
 }
 
-/*For each repository, show (in the right column) who the contributers are. You will need to use the contributors_url for this.*/
 
 /**/
 /**/
